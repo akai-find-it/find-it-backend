@@ -7,8 +7,12 @@ services:
       - ${MARIADB_PORT}:${MARIADB_PORT}
     volumes:
       - db_data:/var/lib/mysql
-    env_file:
-      - .env
+
+    environment:
+      - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
+      - MARIADB_DATABASE=${MARIADB_DATABASE}
+      - MARIADB_USER=${MARIADB_USER}
+      - MARIADB_PASSWORD=${MARIADB_PASSWORD}
 
   app:
     build: .

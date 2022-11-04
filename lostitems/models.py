@@ -9,15 +9,18 @@ class LostItem(models.Model):
     found_at = models.DateField()
     category = models.ForeignKey(Category)
     founder = models.ForeignKey(settings.AUTH_USER_MODEL)
+    created_at = models.DateTimeField(auto_now_add=True)
 
 
 class Answer(models.Model):
     item = models.ForeignKey(LostItem)
     question = models.ForeignKey(Question)
     value = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
 
 
 class Guess(models.Model):
     answer = models.ForeignKey(Answer)
     value = models.TextField()
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    created_at = models.DateTimeField(auto_now_add=True)

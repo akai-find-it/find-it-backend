@@ -29,7 +29,7 @@ class LostItemCreateView(APIView):
         serializer = LostItemInputSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             item = serializer.save()
-            return Response({"id": item.id, **serializer.data}, status.HTTP_201_CREATED)
+            return Response({"id": item.id, **serializer.data}, status=status.HTTP_201_CREATED)
 
         return Response(serializer.error_messages, status.HTTP_400_BAD_REQUEST)
 
@@ -54,7 +54,7 @@ class AnswerCreateView(APIView):
         if serializer.is_valid():
             answer = serializer.save()
             return Response(
-                {"id": answer.id, **serializer.data}, status.HTTP_201_CREATED
+                {"id": answer.id, **serializer.data}, status=status.HTTP_201_CREATED
             )
         return Response(serializer.error_messages, status.HTTP_400_BAD_REQUEST)
 
@@ -96,5 +96,5 @@ class GuessCreateMany(APIView):
         serializer = GuessSerializer(data=request.data, many=True)
         if serializer.is_valid():
             serializer.save()
-            return Response(status.HTTP_201_CREATED)
+            return Response(status=status.HTTP_201_CREATED)
         return Response(serializer.error_messages, status.HTTP_400_BAD_REQUEST)

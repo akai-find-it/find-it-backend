@@ -47,8 +47,10 @@ class LostItemDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class AnswerCreateView(APIView):
-    def post(self, request):
-        serializer = AnswerSerializer(request.data)
+    def post(self, request, item_pk):
+        request.data["item"] = item_pk
+        serializer = AnswerSerializer(data=request.data)
+
         if serializer.is_valid():
             answer = serializer.save()
             return Response(
@@ -84,3 +86,15 @@ class GuessList(generics.ListCreateAPIView):
 
     lookup_url_kwarg = "item_pk"
     lookup_field = "item__pk"
+
+
+class GuessCreateMany(APIView):
+    def post(self, request, *args, **kwargs):
+        for i in range(len(request.data)):
+            request.data[i]["user"] = request.user.id
+
+        serializer = GuessSerializer(data=request.data, many=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status.HTTP_201_CREATED)
+        return Response(serializer.error_messages, status.HTTP_400_BAD_REQUEST)

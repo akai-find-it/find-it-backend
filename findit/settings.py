@@ -26,16 +26,17 @@ SECRET_KEY = "django-insecure-#j1+s5uz++*t#))mmdmwl$*u!@0=d=c)_#=-daxvrjg^$-ei2+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
 INSTALLED_APPS = [
-   'users.apps.UsersConfig',
+    "users.apps.UsersConfig",
     "lostitems.apps.LostitemsConfig",
     "categories.apps.CategoriesConfig",
-    'rest_framework_simplejwt',
+    "rest_framework_simplejwt",
+    "rest_framework_swagger",
     "rest_framework",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -43,7 +44,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
 ]
 
 MIDDLEWARE = [
@@ -61,7 +61,7 @@ ROOT_URLCONF = "findit.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": ['./templates/'],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [

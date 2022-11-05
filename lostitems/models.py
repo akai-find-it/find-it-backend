@@ -8,10 +8,11 @@ class LostItem(models.Model):
     description = models.TextField()
     found_at = models.DateField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    founder = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE
-    )
+    founder = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at", "title"]
 
     def __str__(self):
         return f"Lost item: {self.title}"
@@ -23,6 +24,9 @@ class Answer(models.Model):
     value = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ["created_at", "question"]
+
     def __str__(self):
         return f"Answer for lost item {self.item}"
 
@@ -32,6 +36,9 @@ class Guess(models.Model):
     value = models.TextField()
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["created_at", "user"]
 
     def __str__(self):
         return f"Proposed answer for answer {self.answer}"

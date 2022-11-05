@@ -20,11 +20,26 @@ class LostItemList(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(founder=self.request.user)
 
+class LostItemDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = LostItem.objects.all()
+    serializer_class = LostItemSerializer
+
+
 class AnswerList(generics.ListCreateAPIView):
     queryset = Answer.objects.all()
     serializer_class = AnswerSerializer
 
 
+class AnswerDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Answer.objects.all()
+    serializer_class = AnswerSerializer
+
+
 class GuessList(generics.ListCreateAPIView):
+    queryset = Guess.objects.all()
+    serializer_class = GuessSerializer
+
+
+class GuessDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Guess.objects.all()
     serializer_class = GuessSerializer

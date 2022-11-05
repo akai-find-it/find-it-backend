@@ -32,10 +32,10 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-   'users.apps.UsersConfig',
+    "users.apps.UsersConfig",
     "lostitems.apps.LostitemsConfig",
     "categories.apps.CategoriesConfig",
-    'rest_framework_simplejwt',
+    "rest_framework_simplejwt",
     "rest_framework",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
 ]
 
 MIDDLEWARE = [
@@ -110,12 +109,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTH_USER_MODEL="users.USER"
+AUTH_USER_MODEL = "users.USER"
 
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
     )
 }
 # Internationalization

@@ -1,8 +1,7 @@
 from rest_framework import serializers
 from .models import LostItem, Answer, Guess
-from categories.serializers import CategorySerializer
+from categories.serializers import CategorySerializer, QuestionSerializer
 from django.contrib.auth import get_user_model
-from pprint import pprint
 
 
 class FounderSerializer(serializers.ModelSerializer):
@@ -15,6 +14,14 @@ class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Answer
         fields = ["id", "question_id", "value"]
+
+
+class AnsweredSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Answer
+        fields = ["id", "question_id", "question"]
+
+    question = QuestionSerializer(read_only=True)
 
 
 class GuessSerializer(serializers.ModelSerializer):

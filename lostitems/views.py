@@ -1,11 +1,10 @@
 from rest_framework import generics
 from rest_framework.views import APIView, status
 from django.shortcuts import get_object_or_404
-from pprint import pprint
+
 from .models import LostItem, Answer, Guess
 from .serializers import (
-    LostItemInputSerializer,
-    LostItemListSerializer,
+    AnsweredSerializer,
     AnswerSerializer,
     GuessSerializer,
     LostItemOutputSerializer,
@@ -67,6 +66,15 @@ class AnswerList(APIView):
         )
         queryset = Answer.objects.filter(item__founder=request.user, item__pk=item_pk)
         serializer = AnswerSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+
+class AnsweredQuestionsList(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, item_pk):
+        queryset = Answer.objects.filter(item__pk=item_pk)
+        serializer = AnsweredSerializer(queryset, many=True)
         return Response(serializer.data)
 
 

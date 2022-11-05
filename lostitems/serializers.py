@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from rest_framework.utils import field_mapping
 from .models import LostItem, Answer, Guess
 from categories.serializers import CategorySerializer
 from django.contrib.auth import get_user_model

@@ -1,6 +1,7 @@
 from rest_framework import generics
-from rest_framework.views import APIView
+from rest_framework.views import APIView, status
 from django.shortcuts import get_object_or_404
+from pprint import pprint
 from .models import LostItem, Answer, Guess
 from .serializers import (
     LostItemInputSerializer,
@@ -24,19 +25,14 @@ class StandardResultsSetPagination(PageNumberPagination):
 
 
 class LostItemCreateView(APIView):
-    # permission_classes = [IsAuthenticated]
-    # serializer_class = LostItemInputSerializer
-
-    # def perform_create(self, serializer):
-    #     serializer.save(founder=self.request.user)
     def post(self, request):
         request.data["founder"] = request.user.pk
         serializer = LostItemInputSerializer(data=request.data)
-        print(serializer)
         if serializer.is_valid(raise_exception=True):
-            print(serializer)
-            serializer.save()
-        return Response({})
+            item = serializer.save()
+            return Response({"id": item.id, **serializer.data}, status.HTTP_201_CREATED)
+
+        return Response(serializer.error_messages, status.HTTP_400_BAD_REQUEST)
 
 
 class LostItemListView(generics.ListAPIView):
@@ -49,6 +45,17 @@ class LostItemDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = LostItem.objects.all()
     serializer_class = LostItemOutputSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+
+
+class AnswerCreateView(APIView):
+    def post(self, request):
+        serializer = AnswerSerializer(request.data)
+        if serializer.is_valid():
+            answer = serializer.save()
+            return Response(
+                {"id": answer.id, **serializer.data}, status.HTTP_201_CREATED
+            )
+        return Response(serializer.error_messages, status.HTTP_400_BAD_REQUEST)
 
 
 class AnswerList(APIView):

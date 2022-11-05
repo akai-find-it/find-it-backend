@@ -6,5 +6,6 @@ urlpatterns = [
     path("lost-items/new", views.LostItemCreateView.as_view()),
     path("lost-items/<int:pk>", views.LostItemDetail.as_view()),
     path("lost-items/<int:item_pk>/answers/", views.AnswerList.as_view()),
+    path("lost-items/<int:item_pk>/answers/new", views.AnswerList.as_view()),
     path("lost-items/<int:item_pk>/guesses/", views.GuessList.as_view()),
 ]

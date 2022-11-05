@@ -2,6 +2,7 @@ from rest_framework import generics
 from rest_framework.views import APIView, status
 from django.shortcuts import get_object_or_404
 
+from pprint import pprint
 from .models import LostItem, Answer, Guess
 from .serializers import (
     AnsweredSerializer,
@@ -84,3 +85,15 @@ class GuessList(generics.ListCreateAPIView):
 
     lookup_url_kwarg = "item_pk"
     lookup_field = "item__pk"
+
+
+class GuessCreateMany(APIView):
+    def post(self, request, *args, **kwargs):
+        for i in range(len(request.data)):
+            request.data[i]["user"] = request.user.id
+
+        serializer = GuessSerializer(data=request.data, many=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status.HTTP_201_CREATED)
+        return Response(serializer.error_messages, status.HTTP_400_BAD_REQUEST)

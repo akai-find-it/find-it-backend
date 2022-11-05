@@ -2,6 +2,8 @@ from django.db import models
 from categories.models import Category, Question
 from django.conf import settings
 
+def upload_to(instance, filename):
+    return 'images/{filename}'.format(filename=filename)
 
 class LostItem(models.Model):
     title = models.CharField(max_length=20)
@@ -10,6 +12,8 @@ class LostItem(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     founder = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
+    #image_url = models.ImageField(upload_to=upload_to, blank=True, null=True)
+    image_url = models.ImageField(upload_to=upload_to, blank=True, null=True)
 
     class Meta:
         ordering = ["-created_at", "title"]

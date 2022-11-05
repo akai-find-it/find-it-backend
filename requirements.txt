@@ -5,6 +5,7 @@ djangorestframework-simplejwt
 djangorestframework
 django-rest-swagger
 pyyaml
+Pillow
 
 redgreenunittest
 coverage

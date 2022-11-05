@@ -1,7 +1,9 @@
 from rest_framework import generics
 from rest_framework.views import APIView, status
 from django.shortcuts import get_object_or_404
+from rest_framework.parsers import MultiPartParser, FormParser
 
+from pprint import pprint
 from .models import LostItem, Answer, Guess
 from .serializers import (
     AnsweredSerializer,
@@ -24,6 +26,8 @@ class StandardResultsSetPagination(PageNumberPagination):
 
 
 class LostItemCreateView(APIView):
+    parser_classes = (MultiPartParser, FormParser)
+
     def post(self, request):
         request.data["founder"] = request.user.pk
         serializer = LostItemInputSerializer(data=request.data)

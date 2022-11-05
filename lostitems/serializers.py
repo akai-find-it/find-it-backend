@@ -33,7 +33,7 @@ class GuessSerializer(serializers.ModelSerializer):
 class LostItemInputSerializer(serializers.ModelSerializer):
     class Meta:
         model = LostItem
-        fields = ["category", "founder", "title", "description", "found_at"]
+        fields = ["category", "founder", "title", "description", "found_at","image_url"]
 
 
 class LostItemListSerializer(serializers.ModelSerializer):

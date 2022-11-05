@@ -9,4 +9,6 @@ urlpatterns = [
     path("lost-items/<int:item_pk>/answered/", views.AnsweredQuestionsList.as_view()),
     path("lost-items/<int:item_pk>/answers/new", views.AnswerCreateView.as_view()),
     path("lost-items/<int:item_pk>/guesses/", views.GuessList.as_view()),
+    path("lost-items/<int:item_pk>/guesses/many", views.GuessCreateMany.as_view()),
 ]
+

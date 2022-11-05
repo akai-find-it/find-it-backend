@@ -2,6 +2,13 @@ from rest_framework import serializers
 from rest_framework.utils import field_mapping
 from .models import LostItem, Answer, Guess
 from categories.serializers import CategorySerializer
+from django.contrib.auth import get_user_model
+
+
+class FounderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = get_user_model()
+        fields = ["pk", "email", "first_name", "last_name"]
 
 
 class AnswerSerializer(serializers.ModelSerializer):
@@ -15,6 +22,7 @@ class GuessSerializer(serializers.ModelSerializer):
         model = Guess
         fields = "__all__"
 
+
 class LostItemInputSerializer(serializers.Serializer):
     class Meta:
         model = LostItem
@@ -22,11 +30,12 @@ class LostItemInputSerializer(serializers.Serializer):
         read_only_fields = ["founder"]
 
         def create(self, validated_data):
-                answers = validated_data.pop('answer')
-                item = LostItem.objects.create(**validated_data)
-                for answer in answers:
-                    Answer.objects.create(item=item, **answer)
-                return item
+            answers = validated_data.pop("answer")
+            item = LostItem.objects.create(**validated_data)
+            for answer in answers:
+                Answer.objects.create(item=item, **answer)
+            return item
+
 
 class LostItemListSerializer(serializers.ModelSerializer):
     class Meta:
@@ -35,6 +44,7 @@ class LostItemListSerializer(serializers.ModelSerializer):
         read_only_fields = ["founder"]
 
     category = CategorySerializer(read_only=True)
+    founder = FounderSerializer(read_only=True)
 
 
 class LostItemOutputSerializer(serializers.ModelSerializer):
@@ -45,4 +55,6 @@ class LostItemOutputSerializer(serializers.ModelSerializer):
 
     category = CategorySerializer()
     answers = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-    founder = serializers.SlugRelatedField(many=True, read_only=True, slug_field="first_name")
+    founder = serializers.SlugRelatedField(
+        many=True, read_only=True, slug_field="first_name"
+    )

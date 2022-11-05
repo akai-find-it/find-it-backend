@@ -11,3 +11,4 @@ urlpatterns = [
     path("lost-items/<int:item_pk>/guesses/", views.GuessList.as_view()),
     path("lost-items/<int:item_pk>/guesses/many", views.GuessCreateMany.as_view()),
 ]
+

@@ -3,6 +3,8 @@ mysqlclient
 python-dotenv
 djangorestframework-simplejwt
 djangorestframework
+django-rest-swagger
+pyyaml
 
 redgreenunittest
 coverage

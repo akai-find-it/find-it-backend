@@ -10,12 +10,7 @@ class UserAdmin(BaseUserAdmin):
     fieldsets = (
         (
             None,
-            {
-                "fields": (
-                    "email",
-                    "password",
-                )
-            },
+            {"fields": ("email", "password", "first_name", "last_name")},
         ),
         (
             "Permissions",
@@ -27,13 +22,7 @@ class UserAdmin(BaseUserAdmin):
     add_fieldsets = (
         (
             None,
-            {
-                "fields": (
-                    "email",
-                    "password1",
-                    "password2",
-                )
-            },
+            {"fields": ("email", "password1", "password2", "first_name", "last_name")},
         ),
         (
             "Permissions",

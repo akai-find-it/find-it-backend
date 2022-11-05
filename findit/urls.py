@@ -22,6 +22,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/v1/", include("lostitems.urls")),
     path("api/v1/", include("categories.urls")),
+    path("api/v1/", include("chat.urls")),
     path("users/", include("users.urls")),
     path('swagger', get_schema_view(
         title='API Schema',

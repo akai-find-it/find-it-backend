@@ -34,6 +34,7 @@ ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     "users.apps.UsersConfig",
+    "chat.apps.ChatConfig",
     "lostitems.apps.LostitemsConfig",
     "categories.apps.CategoriesConfig",
     "rest_framework_simplejwt",

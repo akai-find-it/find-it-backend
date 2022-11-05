@@ -2,10 +2,19 @@ from rest_framework import generics
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 from .models import LostItem, Answer, Guess
-from .serializers import LostItemInputSerializer, LostItemListSerializer, AnswerSerializer, GuessSerializer, LostItemOutputSerializer, LostItemInputSerializer, LostItemListSerializer
+from .serializers import (
+    LostItemInputSerializer,
+    LostItemListSerializer,
+    AnswerSerializer,
+    GuessSerializer,
+    LostItemOutputSerializer,
+    LostItemInputSerializer,
+    LostItemListSerializer,
+)
 from rest_framework.pagination import PageNumberPagination, Response
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from .permissions import IsFounder
+
 
 class StandardResultsSetPagination(PageNumberPagination):
 
@@ -14,13 +23,20 @@ class StandardResultsSetPagination(PageNumberPagination):
     max_page_size = 1000
 
 
-class LostItemCreateView(generics.CreateAPIView):
-    queryset = LostItem.objects.all()
-    serializer_class = LostItemInputSerializer
-    permission_classes =[IsAuthenticated]
+class LostItemCreateView(APIView):
+    # permission_classes = [IsAuthenticated]
+    # serializer_class = LostItemInputSerializer
 
-    def perform_create(self, serializer):
-        serializer.save(founder=self.request.user)
+    # def perform_create(self, serializer):
+    #     serializer.save(founder=self.request.user)
+    def post(self, request):
+        request.data["founder"] = request.user.pk
+        serializer = LostItemInputSerializer(data=request.data)
+        print(serializer)
+        if serializer.is_valid(raise_exception=True):
+            print(serializer)
+            serializer.save()
+        return Response({})
 
 
 class LostItemListView(generics.ListAPIView):
@@ -35,26 +51,15 @@ class LostItemDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
 
 
-# class AnswerList(generics.ListCreateAPIView):
-#     queryset = Answer.objects.all()
-#     serializer_class = AnswerSerializer
-#     permission_classes = [IsAuthenticated, IsFounder]
-#     lookup_url_kwarg = "item_pk"
-#     lookup_field = "item__pk"
-
-
-#     def get_object(self):
-#         queryset = self.get_queryset()
-#         obj = get_object_or_404(queryset, **filter)
-#         self.check_object_permissions(self.request, obj)
-#         return obj
-
-class AnswerList(APIView) :
+class AnswerList(APIView):
     permission_classes = [IsAuthenticated, IsFounder]
+
     def get(self, request, item_pk):
-        self.check_object_permissions(request=request, obj=get_object_or_404(LostItem, pk=item_pk))
+        self.check_object_permissions(
+            request=request, obj=get_object_or_404(LostItem, pk=item_pk)
+        )
         queryset = Answer.objects.filter(item__founder=request.user, item__pk=item_pk)
-        serializer = AnswerSerializer(queryset,many=True)
+        serializer = AnswerSerializer(queryset, many=True)
         return Response(serializer.data)
 
 
@@ -64,4 +69,3 @@ class GuessList(generics.ListCreateAPIView):
 
     lookup_url_kwarg = "item_pk"
     lookup_field = "item__pk"
-

@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import LostItem, Answer, Guess
 from categories.serializers import CategorySerializer
 from django.contrib.auth import get_user_model
+from pprint import pprint
 
 
 class FounderSerializer(serializers.ModelSerializer):
@@ -13,7 +14,7 @@ class FounderSerializer(serializers.ModelSerializer):
 class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Answer
-        fields = "__all__"
+        fields = ["id", "question_id", "value"]
 
 
 class GuessSerializer(serializers.ModelSerializer):
@@ -22,18 +23,10 @@ class GuessSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class LostItemInputSerializer(serializers.Serializer):
+class LostItemInputSerializer(serializers.ModelSerializer):
     class Meta:
         model = LostItem
-        fields = ["category", "title", "description", "found_at", "founder", "answers"]
-        read_only_fields = ["founder"]
-
-        def create(self, validated_data):
-            answers = validated_data.pop("answer")
-            item = LostItem.objects.create(**validated_data)
-            for answer in answers:
-                Answer.objects.create(item=item, **answer)
-            return item
+        fields = ["category", "founder", "title", "description", "found_at"]
 
 
 class LostItemListSerializer(serializers.ModelSerializer):
@@ -54,6 +47,4 @@ class LostItemOutputSerializer(serializers.ModelSerializer):
 
     category = CategorySerializer()
     answers = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-    founder = serializers.SlugRelatedField(
-        many=True, read_only=True, slug_field="first_name"
-    )
+    founder = FounderSerializer(read_only=True)

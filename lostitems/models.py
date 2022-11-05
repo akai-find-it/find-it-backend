@@ -8,9 +8,7 @@ class LostItem(models.Model):
     description = models.TextField()
     found_at = models.DateField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    founder = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE
-    )
+    founder = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

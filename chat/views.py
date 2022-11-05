@@ -27,6 +27,7 @@ class ChatView(APIView):
     def post(self, request, user_id):
         msg = request.data["text"]
         token = get_object_or_404(NotificationToken, user__pk=user_id)
-        user_name = get_object_or_404(get_user_model(), pk=user_id).first_name
+        user = get_object_or_404(get_user_model(), pk=request.user.pk)
 
-        send_notification(token=token, msg=msg, user_name=user_name)
+        res, status = send_notification(token=token.token, msg=msg, user=user)
+        return Response(res, status)

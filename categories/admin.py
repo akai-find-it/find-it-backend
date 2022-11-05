@@ -4,5 +4,13 @@ from .models import Category, Question
 
 # Register your models here.
 
-admin.site.register(Category)
-admin.site.register(Question)
+class QuestionsInline(admin.TabularInline):
+    model = Question
+
+class CategoryAdmin(  admin.ModelAdmin):
+    inlines = [QuestionsInline]
+
+admin.site.register(Category, CategoryAdmin)
+
+
+

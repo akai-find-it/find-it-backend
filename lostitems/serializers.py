@@ -5,9 +5,8 @@ from .models import LostItem, Answer, Guess
 class LostItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = LostItem
-        # fields = "__all__"
-        # exclude = ("founder",)
-        fields= ["title", "description", "found_at", "category"]
+        fields = "__all__"
+        read_only_fields = ["founder"]
 
 
 class AnswerSerializer(serializers.ModelSerializer):

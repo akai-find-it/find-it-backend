@@ -15,3 +15,6 @@ class Question(models.Model):
         Category, on_delete=models.CASCADE, related_name="questions"
     )
     required = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.title}"

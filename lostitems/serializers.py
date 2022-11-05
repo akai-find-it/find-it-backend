@@ -7,7 +7,7 @@ from django.contrib.auth import get_user_model
 class FounderSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
-        fields = ["pk", "email", "first_name", "last_name"]
+        fields = ["id", "email", "first_name", "last_name"]
 
 
 class AnswerSerializer(serializers.ModelSerializer):
